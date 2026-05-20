@@ -1,0 +1,323 @@
+
+/* ----------------------------------------
+   Reset & base
+---------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg:       #f5f3ee;
+  --surface:  #ffffff;
+  --border:   #e2ddd6;
+  --text:     #1a1a18;
+  --muted:    #8a8780;
+  --accent:   #2d6a4f;
+  --accent-h: #1e4d38;
+  --done:     #b7b4ae;
+  --danger:   #c0392b;
+  --radius:   12px;
+  --shadow:   0 2px 16px rgba(0,0,0,.07);
+}
+
+body {
+  font-family: 'Georgia', serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 3rem 1rem;
+}
+
+/* ----------------------------------------
+   Container
+---------------------------------------- */
+.container_base {
+  width: 100%;
+  max-width: 520px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 2rem;
+}
+
+/* ----------------------------------------
+   Header
+---------------------------------------- */
+.header {
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.25rem;
+}
+
+.logo {
+  font-size: 2rem;
+  font-weight: normal;
+  letter-spacing: -0.03em;
+  color: var(--accent);
+}
+
+.subtitle {
+  font-size: .85rem;
+  color: var(--muted);
+  margin-top: 2px;
+  font-style: italic;
+}
+
+/* ----------------------------------------
+   Formulário
+---------------------------------------- */
+.form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 1.25rem;
+}
+
+.input {
+  flex: 1;
+  padding: .65rem 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: .95rem;
+  font-family: inherit;
+  color: var(--text);
+  background: var(--bg);
+  outline: none;
+  transition: border-color .2s;
+}
+
+.input::placeholder {
+  color: var(--muted);
+  font-style: italic;
+}
+
+.input:focus {
+  border-color: var(--accent);
+  background: #fff;
+}
+
+.btn-add {
+  width: 42px;
+  height: 42px;
+  border-radius: var(--radius);
+  border: none;
+  background: var(--accent);
+  color: #fff;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background .2s, transform .1s;
+  flex-shrink: 0;
+}
+
+.btn-add:hover  { background: var(--accent-h); }
+.btn-add:active { transform: scale(.95); }
+
+/* ----------------------------------------
+   Filtros
+---------------------------------------- */
+.filters {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 1.25rem;
+}
+
+.filter {
+  padding: .3rem .85rem;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+  background: transparent;
+  font-size: .8rem;
+  font-family: inherit;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all .2s;
+}
+
+.filter:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.filter.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* ----------------------------------------
+   Lista de tarefas
+---------------------------------------- */
+.task-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: .7rem .9rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  transition: background .2s;
+}
+
+.ol,
+ul {
+  padding-left: 0rem !important;
+}
+
+.task-item:hover {
+  background: #eeece7;
+}
+
+.task-item.done .task-title {
+  text-decoration: line-through;
+  color: var(--done);
+}
+
+/* Checkbox */
+.task-check {
+  width: 17px;
+  height: 17px;
+  accent-color: var(--accent);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* Estilo para quando a tarefa estiver concluída */
+.concluida {
+  text-decoration: line-through !important;
+  color: #888888 !important; 
+  opacity: 0.6 !important;
+}
+
+/* Título (clique duplo para editar) */
+.task-title {
+  flex: 1;
+  font-size: .93rem;
+  line-height: 1.4;
+  cursor: text;
+}
+
+/* Input inline de edição */
+.task-title.editing {
+  border: none;
+  border-bottom: 1px solid var(--accent);
+  background: transparent;
+  outline: none;
+  font-size: .93rem;
+  font-family: inherit;
+  width: 100%;
+  padding: 0;
+}
+
+/* Estilo do botão de editar */
+.task-edit {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0px 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Tamanho e cor padrão do ícone do lápis */
+.icon-pencil {
+  width: 16px;
+  height: 16px;
+  color: #666666; /* Cor cinza neutra */
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+/* Efeito ao passar o mouse (Hover) */
+.task-edit:hover .icon-pencil {
+  color: #0d6efd; /* Muda para azul (ou a cor principal do seu app) */
+  transform: scale(1.1);
+}
+
+/* Estilo base comum para os botões de ação */
+.task-edit, .task-delete {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0px 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Regra unificada para o tamanho e transição dos ícones */
+.icon-task {
+  width: 16px;
+  height: 16px;
+  color: #666666; /* Cinza neutro padrão */
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+/* Efeito Hover no Lápis (Fica azul) */
+.task-edit:hover .icon-task {
+  color: #0d6efd;
+  transform: scale(1.1);
+}
+
+/* Efeito Hover na Lixeira (Fica vermelho) */
+.task-delete:hover .icon-trash {
+  color: #dc3545;
+  transform: scale(1.1);
+}
+
+/* ----------------------------------------
+   Rodapé
+---------------------------------------- */
+.footer {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  font-size: .8rem;
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* ----------------------------------------
+   Toast de feedback
+---------------------------------------- */
+.toast {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--text);
+  color: #fff;
+  padding: .6rem 1.2rem;
+  border-radius: 99px;
+  font-size: .85rem;
+  opacity: 0;
+  transition: transform .3s, opacity .3s;
+  pointer-events: none;
+  white-space: nowrap;
+  font-family: 'Georgia', serif;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ----------------------------------------
+   Responsivo
+---------------------------------------- */
+@media (max-width: 480px) {
+  body { padding: 1rem .5rem; }
+  .container { padding: 1.25rem; }
+}
