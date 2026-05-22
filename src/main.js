@@ -1,6 +1,7 @@
 // ELEMENTOS GLOBAIS
 const adicionar = document.getElementById("adicionar_btn");
 const listaTarefas = document.getElementById("task-list");
+const contagemTarefas = document.getElementById('count')
 
 // CAMINHOS DA API
 const urlApiList = "api.php?action=list";
@@ -65,8 +66,10 @@ async function carregarTarefas() {
     tarefas.forEach((tarefa) => {
       fragmento.appendChild(renderizarTarefa(tarefa));
     });
-
+ 
+    contagemTarefas.innerHTML = `${tarefas.length} Tarefas`;
     listaTarefas.appendChild(fragmento);
+
   } catch (error) {
     console.error("Erro na requisição:", error.message);
     listaTarefas.innerHTML = `<li>Não foi possível carregar as tarefas. Tente novamente mais tarde.</li>`;
