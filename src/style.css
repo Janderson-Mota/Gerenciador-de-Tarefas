@@ -185,6 +185,10 @@ ul {
   color: var(--done);
 }
 
+#contagem{
+  background-color: #f5f3ed;
+}
+
 /* Checkbox */
 .task-check {
   width: 17px;

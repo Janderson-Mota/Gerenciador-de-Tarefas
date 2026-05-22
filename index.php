@@ -34,27 +34,21 @@
     <ul class="task-list" id="task-list"></ul>
 
     <!-- Rodapé com contagem -->
-    <footer class="footer">
-      <div class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-          <div class="toast-body">
-            <span id="count"></span>
-          </div>
-          <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
+    <div class="d-flex justify-content-end">
+      <div class="alert alert-light p-1 w-25" id="contagem" role="alert">
+        <span id="count"></span>
       </div>
-  </div>
-  </footer>
+    </div>
 
 
 
-  <!-- Mensagem de feedback (erros, sucesso) -->
-  <div class="toast" id="toast"></div>
+    <!-- Mensagem de feedback (erros, sucesso) -->
+    <div class="toast" id="toast"></div>
 
-  <script src="./src/main.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-    crossorigin="anonymous"></script>
+    <script src="./src/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"></script>
 
 </body>
 

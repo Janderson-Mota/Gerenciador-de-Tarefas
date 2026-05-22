@@ -67,7 +67,7 @@ async function carregarTarefas() {
       fragmento.appendChild(renderizarTarefa(tarefa));
     });
  
-    contagemTarefas.innerHTML = `${tarefas.length} Tarefas`;
+    contagemTarefas.innerHTML = `<i class="bi bi-bar-chart-line"></i> ${tarefas.length} Tarefas`;
     listaTarefas.appendChild(fragmento);
 
   } catch (error) {
