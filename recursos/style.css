@@ -325,3 +325,146 @@ ul {
   body { padding: 1rem .5rem; }
   .container { padding: 1.25rem; }
 }
+
+/* MODAIS */
+.modal-overlay {
+  display: none; 
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4); /* Overlay levemente mais translúcido */
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(2px);
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+/* Estrutura interna do Modal */
+.modal-content {
+  background-color: #ffffff;
+  border-radius: 12px; /* Arredondamento suave acompanhando os cards */
+  width: 90%;
+  max-width: 480px;
+  padding: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08); /* Sombra difusa e elegante */
+  animation: modalFadeIn 0.2s ease-out;
+  color: #334e45; /* Tom escuro levemente esverdeado (baseado no título "tarefas") */
+}
+
+/* Centralização do modal de deleção */
+.modal-sm {
+  max-width: 380px;
+  text-align: center;
+}
+
+.modal-header h3 {
+  margin: 0 0 20px 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #1f5042;
+}
+
+.modal-body p {
+  margin: 0 0 12px 0;
+  line-height: 1.5;
+}
+
+.text-danger {
+  color: #d93846; /* Vermelho extraído do badge "alta" */
+  font-weight: 500;
+}
+
+/* Estilização de formulários */
+.form-group {
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: #556b62;
+}
+
+/* Inputs replicando o estilo do "nova tarefa..." */
+.form-control {
+  width: 100%;
+  padding: 12px 16px;
+  background-color: #f4f3ed; /* Fundo bege suave */
+  border: 1px solid #e2dfd5; /* Borda quase imperceptível */
+  border-radius: 8px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  color: #334e45;
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+
+.form-control:focus {
+  outline: none;
+  background-color: #ffffff;
+  border-color: #266b4d; /* Verde principal */
+  box-shadow: 0 0 0 3px rgba(38, 107, 77, 0.15);
+}
+
+/* Rodapé e botões */
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.modal-sm .modal-footer {
+  justify-content: center;
+}
+
+/* Botões baseados no padrão geométrico do projeto */
+.modal-footer .btn {
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: filter 0.2s;
+}
+
+.modal-footer .btn:hover {
+  filter: brightness(0.9);
+}
+
+.btn-secondary {
+  background-color: #f4f3ed;
+  color: #556b62;
+  border: 1px solid #e2dfd5;
+}
+
+.btn-primary {
+  background-color: #266b4d; /* Verde extraído do botão "+" */
+  color: #ffffff;
+}
+
+.btn-danger {
+  background-color: #d93846;
+  color: #ffffff;
+}
+
+/* Animação de entrada fluida (escala em vez de slide) */
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

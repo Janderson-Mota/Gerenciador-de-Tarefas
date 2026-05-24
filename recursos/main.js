@@ -1,13 +1,11 @@
 // ELEMENTOS GLOBAIS
 const adicionar = document.getElementById("adicionar_btn");
 const listaTarefas = document.getElementById("task-list");
-const contagemTarefas = document.getElementById('count')
+const contagemTarefas = document.getElementById("count");
+const fecharModal = document.getElementsByClassName('#fechar-modal');
 
 // CAMINHOS DA API
-const urlApiList = "api.php?action=list";
-const urlApiCreate = "api.php?action=create";
-const urlApiUpdate = "api.php?action=update";
-const urlApiDelete = "api.php?action=delete";
+const urlApi = "api.php";
 
 // RETORNA A CLASSE DO BADGE CONFORME E PRIORIDADE
 const getBadgeClass = (prioridade) => {
@@ -26,8 +24,8 @@ const renderizarTarefa = (tarefa) => {
 
   li.innerHTML = `
 
-    <input type="checkbox" class="task-check" id="checkbox"  ${tarefa.concluido ? "checked" : ""} />
-    <span class="task-title ${tarefa.concluido ? "concluida" : ""}">${tarefa.titulo}</span>
+    <input type="checkbox" class="task-check" id="checkbox"  ${tarefa.concluida ? "checked" : ""} />
+    <span class="task-title ${tarefa.concluida ? "concluida" : ""}">${tarefa.titulo}</span>
     <input type="text" value="${tarefa.id}" class="task-id d-none">
     <input type="text" value="${tarefa.concluida}" class="task-status d-none">
     <span class="badge  ${getBadgeClass(tarefa.prioridade)} task-prioridade">${tarefa.prioridade ?? ""}</span>
@@ -53,7 +51,7 @@ const renderizarTarefa = (tarefa) => {
 // REQUISIÇÕES
 async function carregarTarefas() {
   try {
-    const response = await fetch(urlApiList);
+    const response = await fetch(urlApi);
 
     if (!response.ok) {
       throw new Error(`Erro HTTP: ${response.status}`);
@@ -64,12 +62,12 @@ async function carregarTarefas() {
 
     const fragmento = document.createDocumentFragment();
     tarefas.forEach((tarefa) => {
+      tarefa.concluida = Number(tarefa.concluida) === 1;
       fragmento.appendChild(renderizarTarefa(tarefa));
     });
- 
+
     contagemTarefas.innerHTML = `<i class="bi bi-bar-chart-line"></i> ${tarefas.length} Tarefas`;
     listaTarefas.appendChild(fragmento);
-
   } catch (error) {
     console.error("Erro na requisição:", error.message);
     listaTarefas.innerHTML = `<li>Não foi possível carregar as tarefas. Tente novamente mais tarde.</li>`;
@@ -88,22 +86,22 @@ async function atualizarTarefa(tarefa) {
 // CHECKBOX
 listaTarefas.addEventListener("change", (event) => {
   if (event.target.classList.contains("task-check")) {
-    
     const checkboxModificado = event.target;
     const itemTarefa = checkboxModificado.closest(".task-item");
     const tituloModificado = checkboxModificado.nextElementSibling;
-
     const botaoEditar = itemTarefa.querySelector(".task-edit");
     const botaoDeletar = itemTarefa.querySelector(".task-delete");
     const idTarefa = itemTarefa.querySelector(".task-id").value;
     const novoStatus = checkboxModificado.checked;
 
-    const atualizarStatus = new Request(urlApiUpdate, {
-      method: "POST",
+    // URL PARA O STATUS
+    const urlUpdateStatus = urlApi + "?recurso=status";
+    const atualizarStatus = new Request(urlUpdateStatus, {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ id: idTarefa, concluido: novoStatus }),
+      body: JSON.stringify({ id: idTarefa, concluida: novoStatus }),
     });
 
     if (checkboxModificado.checked) {
@@ -120,6 +118,33 @@ listaTarefas.addEventListener("change", (event) => {
   }
 });
 
-// EDITAR
+// EDIÇÃO E DELETAR
+listaTarefas.addEventListener("click", (event) => {
+  
+  const btnDeletar = event.target.closest(".task-delete");
+  const modalExcluir = document.getElementById('modal-deletar');
+  const btnEditar = event.target.closest(".task-edit");
+  const modalEditar = document.getElementById('modal-editar');
+
+  // FLUXO DE EXCLUSÃO
+  if (btnDeletar) {
+    const idTarefa = btnDeletar.dataset.id;
+    const itemTarefa = btnDeletar.closest(".task-item"); 
+    modalExcluir.classList.add('active');
+    
+  }
+
+  // FLUXO DE EDIÇÃO
+  if (btnEditar) {
+    const idTarefa = btnEditar.dataset.id;
+     modalEditar.classList.add('active');
+  }
+});
+
+// MODAL
+
+
+
+
 // INICIALIZAÇÃO
 carregarTarefas();

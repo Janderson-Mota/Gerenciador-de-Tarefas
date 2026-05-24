@@ -1,67 +1,35 @@
 <?php
 
-$action = $_GET['action'] ?? '';
-$caminhoDb = './db/db.json';
-$listaTarefa = json_decode(file_get_contents($caminhoDb), true) ?? [];
+require_once __DIR__ . '/db/conexao.php';
+require_once __DIR__ . '/src/includes/functions.php';
 
-switch ($action) {
+$metodo = $_SERVER['REQUEST_METHOD'];
+$recurso = $_GET['recurso'] ?? '';
 
-    case "list":
+switch ($metodo) {
 
-        http_response_code(200);
-        echo json_encode(['status' => 'ok', 'tarefas' => $listaTarefa]);
+    case "GET": 
+    
+        echo $listaTarefa = buscarTarefas();
         break;
 
-    case "create":
+    case "POST": 
 
-        $novaTarefa = "create tarefas";
-
-        http_response_code(201);
-        echo json_encode(['status' => 'ok', 'tarefas' => $novaTarefa]);
         break;
 
-    case "update":
-
+    case "PUT": 
+      
         $dadosRecebidos = json_decode(file_get_contents('php://input'), true);
-        $idRecebido = $dadosRecebidos['id'] ?? null;
-        $tarefaEncontrada = false;
+        echo $resposta = atualizartarefas($recurso , $dadosRecebidos);
+        break; 
 
-        foreach ($listaTarefa as &$tarefa) {
-            if ($tarefa['id'] == $idRecebido) {
-
-                foreach ($dadosRecebidos as $chave => $valor) {
-                    if ($chave !== 'id') {
-                        $tarefa[$chave] = $valor;
-                    }
-                }
-                $tarefa['atualizado_em'] = date('Y-m-d H:i:s');
-                $tarefaEncontrada = true;
-                break;
-            }
-        }
-
-        if ($tarefaEncontrada) {
-            file_put_contents($caminhoDb, json_encode($listaTarefa, JSON_PRETTY_PRINT));
-            http_response_code(200);
-            echo json_encode(['status' => 'ok', 'mensagem' => 'Tarefa atualizada com sucesso']);
-        } else {
-            http_response_code(404);
-            echo json_encode(['status' => 'error', 'mensagem' => 'Tarefa não encontrada']);
-        }
-        break;
-
-    case "delete":
-
-        $deleteTarefa = "delete tarefas";
-
-        http_response_code(200);
-        echo json_encode(['status' => 'ok', 'tarefas' => $deleteTarefa]);
+    case "DELETE": 
+       
         break;
 
     default:
-        http_response_code(404);
-        echo json_encode(['status' => 'error', 'mensagem' => 'Ação não encontrada']);
-
+        http_response_code(405); 
+        echo json_encode(['status' => 'error', 'mensagem' => 'Método HTTP não permitido']);
+        break;
 }
-
 ?>
