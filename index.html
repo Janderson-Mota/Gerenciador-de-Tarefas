@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexo Bank | Gepe — Premium UI</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --c-bg: #0A0A0A;
+  --c-surface: #121212;
+  --c-primary: #FF6B4A;
+  --c-primary-glow: rgba(255, 107, 74, 0.3);
+  --c-text: #F5F5F5;
+  --c-muted: #888888;
+  --border: rgba(255, 255, 255, 0.08);
+  
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  
+  /* Curva de animação ajustada para ser MAIS LENTA e MAIS SUAVE */
+  --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html, body { 
+  width: 100%; height: 100%; overflow: hidden; 
+  background: var(--c-bg); color: var(--c-text); 
+  font-family: var(--font-body); 
+}
+
+/* ── NAVEGAÇÃO ── */
+nav {
+  position: fixed; top: 0; left: 0; width: 100%; 
+  padding: 32px 56px; display: flex; align-items: center; justify-content: space-between; 
+  z-index: 100;
+}
+.logo { font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; letter-spacing: -0.03em; }
+.logo em { color: var(--c-primary); font-style: normal; }
+
+.nav-right { display: flex; align-items: center; gap: 32px; }
+.nav-link { 
+  color: var(--c-muted); text-decoration: none; font-size: 0.85rem; 
+  font-weight: 500; transition: color 0.3s ease; 
+}
+.nav-link:hover { color: var(--c-text); }
+.nav-link.active { color: var(--c-text); font-weight: 600; }
+.nav-cta { 
+  color: var(--c-text); border: 1px solid var(--border); 
+  padding: 10px 24px; border-radius: 999px; transition: all 0.3s ease;
+}
+.nav-cta:hover { background: var(--c-text); color: var(--c-bg); border-color: var(--c-text); }
+
+/* ── ESTRUTURA PRINCIPAL ── */
+.app { 
+  position: relative; z-index: 1; width: 100%; height: 100vh; 
+  display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; 
+}
+
+/* ── ESQUERDA — TEXTOS ENRIQUECIDOS ── */
+.left { 
+  display: flex; flex-direction: column; justify-content: center; 
+  padding: 0 64px 0 80px; position: relative; 
+}
+
+.stagger-item {
+  opacity: 0; transform: translateY(30px);
+  animation: fadeUp 1.2s var(--ease-smooth) forwards;
+}
+.d-1 { animation-delay: 0.1s; }
+.d-2 { animation-delay: 0.2s; }
+.d-3 { animation-delay: 0.3s; }
+.d-4 { animation-delay: 0.4s; }
+.d-5 { animation-delay: 0.5s; }
+
+.eyebrow { 
+  display: flex; align-items: center; gap: 12px; font-size: 0.75rem; 
+  font-weight: 600; color: var(--c-muted); text-transform: uppercase; 
+  letter-spacing: 0.12em; margin-bottom: 24px;
+}
+.eyebrow-dot { 
+  width: 6px; height: 6px; border-radius: 50%; 
+  background: var(--c-primary); 
+  box-shadow: 0 0 8px var(--c-primary-glow);
+}
+
+h2 { 
+  font-family: var(--font-display); font-size: clamp(2.8rem, 4.5vw, 4.2rem); 
+  line-height: 1.05; letter-spacing: -0.03em; font-weight: 500; margin-bottom: 24px;
+}
+h2 em { font-style: normal; color: var(--c-muted); }
+
+.lead-text {
+  font-size: 1.15rem; line-height: 1.6; color: rgba(255,255,255,0.85); 
+  font-weight: 300; margin-bottom: 40px; max-width: 500px;
+}
+.lead-text strong { font-weight: 500; color: #fff; }
+
+/* Grid de Diferenciais */
+.features-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 24px 32px;
+  margin-bottom: 48px; max-width: 540px;
+}
+.feature { display: flex; align-items: flex-start; gap: 12px; }
+.feature-icon { 
+  color: var(--c-primary); font-size: 1rem; margin-top: 2px;
+  text-shadow: 0 0 10px var(--c-primary-glow);
+}
+.feature-content h4 { font-family: var(--font-display); font-size: 0.95rem; font-weight: 600; margin-bottom: 6px; color: #fff; }
+.feature-content p { font-size: 0.85rem; line-height: 1.5; color: var(--c-muted); }
+
+/* Área de Ação e Stats combinada */
+.action-area {
+  display: flex; align-items: center; gap: 48px;
+  padding-top: 32px; border-top: 1px solid var(--border);
+  max-width: 540px;
+}
+
+.stats-group { display: flex; gap: 32px; }
+.stat-num { font-family: var(--font-display); font-size: 2rem; font-weight: 500; line-height: 1; margin-bottom: 4px; color: var(--c-text); }
+.stat-label { font-size: 0.75rem; color: var(--c-muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em;}
+
+.btn-primary {
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--c-primary); color: #fff; text-decoration: none;
+  font-weight: 600; font-size: 0.95rem; padding: 16px 32px;
+  border-radius: 999px; transition: all 0.4s var(--ease-smooth);
+  box-shadow: 0 8px 24px -8px rgba(255, 107, 74, 0.5);
+}
+.btn-primary:hover {
+  background: #E55A3B; transform: translateY(-2px);
+  box-shadow: 0 12px 32px -8px rgba(255, 107, 74, 0.8);
+}
+
+/* ── DIREITA — CARROSSEL SLIDE + FLIP ── */
+.right { 
+  position: relative; display: flex; align-items: center; 
+  justify-content: center; padding: 40px 40px 40px 0; 
+}
+
+.carousel-viewport { 
+  width: 100%; height: 100%; position: relative; 
+  border-radius: 24px; overflow: hidden; 
+}
+
+/* TEMPO DE SLIDE MAIS LENTO (1.6s) */
+.carousel-track {
+  display: flex; width: 300%; height: 100%;
+  transition: transform 1.6s var(--ease-smooth);
+}
+
+.carousel-slide {
+  width: 33.3333%; height: 100%; position: relative;
+  perspective: 2500px; cursor: pointer; padding: 0;
+}
+
+/* TEMPO DE FLIP MAIS LENTO (1.8s) */
+.flip-card-inner {
+  width: 100%; height: 100%; position: relative;
+  transition: transform 1.8s var(--ease-smooth);
+  transform-style: preserve-3d;
+}
+
+.carousel-slide.flipped .flip-card-inner,
+.carousel-slide:hover .flip-card-inner {
+  transform: rotateY(-180deg);
+}
+
+.card-face { 
+  position: absolute; inset: 0; backface-visibility: hidden; 
+  border-radius: 24px; overflow: hidden;
+}
+
+/* Frente */
+.card-front { background: var(--c-surface); }
+.card-front img { 
+  width: 100%; height: 100%; object-fit: cover; 
+  filter: brightness(0.9) contrast(1.1); 
+  transform: scale(1.05); transition: transform 12s ease-out; 
+}
+.carousel-slide.is-active .card-front img { transform: scale(1); }
+
+/* Overlay de Informação (ULTRA FROSTED GLASS) */
+.card-info { 
+  position: absolute; bottom: 32px; left: 32px; right: 32px; 
+  /* Fundo semitransparente muito suave */
+  background: rgba(15, 15, 18, 0.35);
+  /* Desfoque alto + saturação para as cores da foto vazarem com vivacidade */
+  backdrop-filter: blur(32px) saturate(120%); 
+  -webkit-backdrop-filter: blur(32px) saturate(120%);
+  /* Bordas simulando reflexo de luz no vidro */
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-top: 1px solid rgba(255, 255, 255, 0.3); 
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 32px; z-index: 5; 
+  pointer-events: none; opacity: 0; transform: translateY(20px); 
+  transition: all 1s var(--ease-smooth) 0.4s; 
+  /* Sombra forte para descolar da imagem */
+  box-shadow: 0 30px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+}
+.carousel-slide.is-active .card-info { opacity: 1; transform: translateY(0); }
+
+.info-label { 
+  font-size: 0.7rem; font-weight: 600; color: #FF8C6E; 
+  text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; 
+}
+.info-title { font-family: var(--font-display); font-size: 2rem; font-weight: 500; margin-bottom: 8px; color: #fff;}
+.info-desc { font-size: 1rem; color: rgba(255,255,255,0.85); line-height: 1.6; }
+
+/* Verso */
+.card-back { 
+  background: var(--c-surface); border: 1px solid var(--border); 
+  display: flex; flex-direction: column; justify-content: center; padding: 64px; 
+  transform: rotateY(-180deg); 
+}
+.card-back h3 { font-family: var(--font-display); font-size: 2.2rem; font-weight: 500; margin-bottom: 16px; letter-spacing: -0.02em; }
+.card-back-text { font-size: 1rem; line-height: 1.6; color: var(--c-muted); margin-bottom: 40px; max-width: 320px; }
+
+.card-back-points { display: flex; flex-direction: column; gap: 16px; }
+.point { display: flex; gap: 16px; font-size: 0.95rem; color: var(--c-text); align-items: center; }
+.point-marker { color: var(--c-primary); font-size: 0.8rem; }
+
+/* Controles */
+.carousel-controls { 
+  position: absolute; top: 32px; right: 32px; z-index: 6; 
+  display: flex; gap: 12px; align-items: center; 
+  background: rgba(0,0,0,0.4); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  padding: 12px 20px; border-radius: 999px; border: 1px solid var(--border);
+}
+.dot { 
+  width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.3); 
+  border: none; cursor: pointer; transition: all 0.4s var(--ease-smooth); 
+}
+.dot:hover { background: var(--c-text); }
+.dot.on { background: var(--c-primary); transform: scale(1.5); }
+
+.progress-bar { position: absolute; bottom: 0; left: 0; height: 3px; background: var(--c-primary); z-index: 8; }
+
+@keyframes fadeUp { 
+  0% { opacity: 0; transform: translateY(30px); } 
+  100% { opacity: 1; transform: translateY(0); } 
+}
+
+@media(max-width: 968px) {
+  html, body { overflow: auto; }
+  .app { grid-template-columns: 1fr; height: auto; }
+  nav { padding: 24px; background: var(--c-bg); }
+  .nav-right { display: none; }
+  .left { padding: 120px 32px 64px; }
+  .right { padding: 0 24px 48px; height: 600px; }
+  h2 { font-size: 2.5rem; }
+  .card-back { padding: 32px; }
+  .card-info { bottom: 16px; left: 16px; right: 16px; padding: 24px; }
+  .features-grid { grid-template-columns: 1fr; gap: 24px; }
+  .action-area { flex-direction: column; align-items: flex-start; gap: 32px; }
+}
+</style>
+</head>
+<body>
+
+
+<main class="app">
+
+  <!-- ESQUERDA -->
+  <section class="left">
+    <div class="eyebrow stagger-item d-1"><span class="eyebrow-dot"></span>Nexo Bank</div>
+    <h2 class="stagger-item d-2">Gente que<br><em>move gente.</em></h2>
+
+    <p class="lead-text stagger-item d-3">
+      O <strong>coração humano</strong> da nossa operação. A Gestão de Experiência e Pessoas transforma o ambiente de trabalho em um ecossistema focado em alta performance sustentável e colaboração genuína.
+    </p>
+
+    <div class="features-grid stagger-item d-4">
+      <div class="feature">
+        <span class="feature-icon">✦</span>
+        <div class="feature-content">
+          <h4>Cultura Viva</h4>
+          <p>Rituais e ações que garantem que nossos valores sejam vividos na prática, todo dia.</p>
+        </div>
+      </div>
+      <div class="feature">
+        <span class="feature-icon">✦</span>
+        <div class="feature-content">
+          <h4>Plano de Voo</h4>
+          <p>Estruturas de desenvolvimento para que você cresça no mesmo ritmo do banco.</p>
+        </div>
+      </div>
+    </div>
+
+    
+  </section>
+
+  <!-- DIREITA (CARROSSEL SLIDE + FLIP) -->
+  <section class="right">
+    <div class="carousel-viewport" id="carousel">
+      
+      <div class="carousel-track" id="track">
+        
+        <!-- SLIDE 1 -->
+        <div class="carousel-slide is-active" data-slide="0">
+          <div class="flip-card-inner">
+            <div class="card-face card-front">
+              <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1400&q=80" alt="Equipe">
+              <div class="card-info">
+                <div class="info-label">Missão & Visão</div>
+                <h4 class="info-title">Propósito que une</h4>
+                <p class="info-desc">Um banco que existe para as pessoas que o fazem existir.</p>
+              </div>
+            </div>
+            <div class="card-face card-back">
+              <h3>Propósito Unificado</h3>
+              <p class="card-back-text">Um banco construído ao redor da evolução contínua das pessoas.</p>
+              <div class="card-back-points">
+                <div class="point"><span class="point-marker">✦</span> Desenvolvimento contínuo</div>
+                <div class="point"><span class="point-marker">✦</span> Ambiente inspirador</div>
+                <div class="point"><span class="point-marker">✦</span> Valores compartilhados</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SLIDE 2 -->
+        <div class="carousel-slide" data-slide="1">
+          <div class="flip-card-inner">
+            <div class="card-face card-front">
+              <img src="https://images.unsplash.com/photo-1553484771-371a605b060b?auto=format&fit=crop&w=1400&q=80" alt="Valores">
+              <div class="card-info">
+                <div class="info-label">Valores</div>
+                <h4 class="info-title">Cultura vivida</h4>
+                <p class="info-desc">Protagonismo e colaboração guiam nosso dia a dia.</p>
+              </div>
+            </div>
+            <div class="card-face card-back">
+              <h3>Cultura Viva</h3>
+              <p class="card-back-text">Princípios claros que guiam cada decisão e relacionamento interno.</p>
+              <div class="card-back-points">
+                <div class="point"><span class="point-marker">✦</span> Protagonismo ativo</div>
+                <div class="point"><span class="point-marker">✦</span> Colaboração genuína</div>
+                <div class="point"><span class="point-marker">✦</span> Transparência total</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SLIDE 3 -->
+        <div class="carousel-slide" data-slide="2">
+          <div class="flip-card-inner">
+            <div class="card-face card-front">
+              <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1400&q=80" alt="Equipe">
+              <div class="card-info">
+                <div class="info-label">Iniciativas</div>
+                <h4 class="info-title">Ações concretas</h4>
+                <p class="info-desc">Construindo desenvolvimento real na prática.</p>
+              </div>
+            </div>
+            <div class="card-face card-back">
+              <h3>Programas Reais</h3>
+              <p class="card-back-text">Nossas ações são pensadas para o bem-estar e o avanço técnico.</p>
+              <div class="card-back-points">
+                <div class="point"><span class="point-marker">✦</span> Nexo Talks</div>
+                <div class="point"><span class="point-marker">✦</span> Onboarding imersivo</div>
+                <div class="point"><span class="point-marker">✦</span> Programa de Bem-estar</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="progress-bar" id="pbar"></div>
+      <div class="carousel-controls">
+        <button class="dot on" data-i="0"></button>
+        <button class="dot" data-i="1"></button>
+        <button class="dot" data-i="2"></button>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<script>
+const track = document.getElementById('track');
+const slides = document.querySelectorAll('.carousel-slide');
+const dots = document.querySelectorAll('.dot[data-i]');
+const pbar = document.getElementById('pbar');
+const carousel = document.getElementById('carousel');
+
+let curr = 0;
+let timer;
+const DELAY = 6000;
+let isHovered = false;
+
+function goTo(n) {
+  curr = n;
+  track.style.transform = `translateX(-${curr * 33.3333}%)`;
+  
+  dots.forEach(d => d.classList.remove('on'));
+  dots[curr].classList.add('on');
+  
+  slides.forEach(s => s.classList.remove('is-active', 'flipped'));
+  slides[curr].classList.add('is-active');
+  
+  restartProgress();
+}
+
+function restartProgress() {
+  pbar.style.transition = 'none';
+  pbar.style.width = '0';
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    pbar.style.transition = 'width ' + DELAY + 'ms linear';
+    pbar.style.width = '100%';
+  }));
+}
+
+function autoplay() {
+  clearInterval(timer);
+  if (!isHovered) {
+    timer = setInterval(() => {
+      goTo((curr + 1) % slides.length);
+    }, DELAY);
+  }
+}
+
+dots.forEach(d => d.addEventListener('click', (e) => {
+  e.stopPropagation();
+  clearInterval(timer);
+  goTo(+d.dataset.i);
+  autoplay();
+}));
+
+carousel.addEventListener('mouseenter', () => {
+  isHovered = true;
+  clearInterval(timer);
+});
+
+carousel.addEventListener('mouseleave', () => {
+  isHovered = false;
+  slides.forEach(s => s.classList.remove('flipped'));
+  restartProgress();
+  autoplay();
+});
+
+slides.forEach(slide => {
+  slide.addEventListener('click', () => {
+    slide.classList.toggle('flipped');
+  });
+});
+
+autoplay();
+restartProgress();
+</script>
+</body>
+</html>
