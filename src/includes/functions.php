@@ -29,7 +29,6 @@ function buscarTarefas()
     return json_encode(['status' => 'ok', 'tarefas' => $dadosProcessados]);
 
 }
-
 function atualizartarefas($recurso, $dadosRecebidos)
 {
 
@@ -44,7 +43,7 @@ function atualizartarefas($recurso, $dadosRecebidos)
     switch ($recurso) {
 
         case "status":
-    
+
             if (empty($id) || !isset($concluida)) {
                 http_response_code(400);
                 return json_encode(['status' => 'error', 'mensagem' => 'ID e status são obrigatórios!']);
@@ -72,9 +71,14 @@ function atualizartarefas($recurso, $dadosRecebidos)
             $stmt->close();
             http_response_code(500);
             return json_encode(['status' => 'error', 'mensagem' => 'Erro ao atualizar no banco de dados.']);
+        
+
+        case "tarefa":
+        return "";
 
         default:
             http_response_code(400);
             return json_encode(['status' => 'error', 'mensagem' => 'Recurso de atualização inválido']);
-    }
+   
+     }
 }

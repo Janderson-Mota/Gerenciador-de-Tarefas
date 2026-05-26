@@ -45,49 +45,55 @@
     <div class="toast" id="toast"></div>
 
     <!-- MODAL DE EDIÇÃO -->
-    <div id="modal-editar" class="modal-overlay">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3>Editar Tarefa</h3>
-        </div>
-        <div class="modal-body">
-          <input type="hidden" id="edit-id">
-
-          <div class="form-group">
-            <label for="edit-titulo">Título da Tarefa</label>
-            <input type="text" id="edit-titulo" class="form-control" autocomplete="off">
+    <div class="modal fade" id="modal-editar" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="modalEditarLabel">Editar Tarefa</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
           </div>
+          <div class="modal-body">
+            <input type="hidden" id="edit-id">
 
-          <div class="form-group">
-            <label for="edit-prioridade">Prioridade</label>
-            <select id="edit-prioridade" class="form-control">
-              <option value="alta">Alta</option>
-              <option value="media">Média</option>
-              <option value="baixa">Baixa</option>
-            </select>
+            <div class="form-group mb-3">
+              <label for="edit-titulo" class="form-label">Título da Tarefa</label>
+              <input type="text" id="edit-titulo" class="form-control" autocomplete="off">
+            </div>
+
+            <div class="form-group">
+              <label for="edit-prioridade" class="form-label">Prioridade</label>
+              <select id="edit-prioridade" class="form-select">
+                <option value="alta">Alta</option>
+                <option value="media">Média</option>
+                <option value="baixa">Baixa</option>
+              </select>
+            </div>
           </div>
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary fechar-modal">Cancelar</button>
-          <button class="btn btn-primary" id="btn-salvar-edicao">Salvar Alterações</button>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary" id="btn-salvar-edicao">Salvar Alterações</button>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- MODAL DE EXCLUSÃO -->
-    <div id="modal-deletar" class="modal-overlay">
-      <div class="modal-content modal-sm">
-        <div class="modal-header">
-          <h3>Confirmar Exclusão</h3>
-        </div>
-        <div class="modal-body">
-          <p>Tem certeza que deseja excluir esta tarefa?</p>
-          <p class="text-danger">Esta ação não poderá ser desfeita.</p>
-          <input type="hidden" id="delete-id">
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary fechar-modal">Cancelar</button>
-          <button class="btn btn-danger" id="btn-confirmar-delecao">Excluir</button>
+    <!-- MODAL DE DELETAR -->
+    <div class="modal fade" id="modal-deletar" tabindex="-1" aria-labelledby="modalDeletarLabel" aria-hidden="true">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="modalDeletarLabel">Confirmar Exclusão</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+          </div>
+          <div class="modal-body">
+            <p>Tem certeza que deseja excluir esta tarefa?</p>
+            <p class="text-danger mb-0">Esta ação não poderá ser desfeita.</p>
+            <input type="hidden" id="delete-id">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-danger" id="btn-confirmar-delecao">Excluir</button>
+          </div>
         </div>
       </div>
     </div>

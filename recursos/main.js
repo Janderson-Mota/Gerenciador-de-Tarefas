@@ -2,7 +2,10 @@
 const adicionar = document.getElementById("adicionar_btn");
 const listaTarefas = document.getElementById("task-list");
 const contagemTarefas = document.getElementById("count");
-const fecharModal = document.getElementsByClassName('#fechar-modal');
+
+// CONFIRMAÇÃO DO MODAL
+const btnSalvarEdicao = document.getElementById("btn-salvar-edicao");
+const btnSalvarDeletar = document.getElementById("btn-confirmar-delecao");
 
 // CAMINHOS DA API
 const urlApi = "api.php";
@@ -25,10 +28,10 @@ const renderizarTarefa = (tarefa) => {
   li.innerHTML = `
 
     <input type="checkbox" class="task-check" id="checkbox"  ${tarefa.concluida ? "checked" : ""} />
-    <span class="task-title ${tarefa.concluida ? "concluida" : ""}">${tarefa.titulo}</span>
+    <span class="task-title ${tarefa.concluida ? "concluida" : ""}" data-tarefa="${tarefa.titulo}">${tarefa.titulo}</span>
     <input type="text" value="${tarefa.id}" class="task-id d-none">
     <input type="text" value="${tarefa.concluida}" class="task-status d-none">
-    <span class="badge  ${getBadgeClass(tarefa.prioridade)} task-prioridade">${tarefa.prioridade ?? ""}</span>
+    <span class="badge ${getBadgeClass(tarefa.prioridade)} task-prioridade" data-prioridade="${tarefa.prioridade}">${tarefa.prioridade ?? ""}</span>
     <button class="task-edit" data-id="${tarefa.id}" aria-label="Editar tarefa">
       <svg class="icon-pencil" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M12 20h9"></path>
@@ -73,8 +76,7 @@ async function carregarTarefas() {
     listaTarefas.innerHTML = `<li>Não foi possível carregar as tarefas. Tente novamente mais tarde.</li>`;
   }
 }
-
-async function atualizarTarefa(tarefa) {
+async function atualizarInformacoesTarefa(tarefa) {
   try {
     const response = await fetch(tarefa);
     const result = await response.json();
@@ -108,43 +110,107 @@ listaTarefas.addEventListener("change", (event) => {
       tituloModificado.classList.add("concluida");
       botaoEditar.disabled = true;
       botaoDeletar.disabled = true;
-      atualizarTarefa(atualizarStatus);
+      atualizarInformacoesTarefa(atualizarStatus);
     } else {
       tituloModificado.classList.remove("concluida");
       botaoEditar.disabled = false;
       botaoDeletar.disabled = false;
-      atualizarTarefa(atualizarStatus);
+      atualizarInformacoesTarefa(atualizarStatus);
     }
   }
 });
 
-// EDIÇÃO E DELETAR
+// ABRIR MODAL
 listaTarefas.addEventListener("click", (event) => {
-  
   const btnDeletar = event.target.closest(".task-delete");
-  const modalExcluir = document.getElementById('modal-deletar');
   const btnEditar = event.target.closest(".task-edit");
-  const modalEditar = document.getElementById('modal-editar');
+
+  // INSTANCIA OS MODAIS DO BOOSTRAP NA MEMORIA
+  const modalExcluirObj = new bootstrap.Modal(
+    document.getElementById("modal-deletar"),
+  );
+  const modalEditarObj = new bootstrap.Modal(
+    document.getElementById("modal-editar"),
+  );
+
+  // ID DE TAREFAS
+  let tarefaIdAtual = null;
 
   // FLUXO DE EXCLUSÃO
   if (btnDeletar) {
-    const idTarefa = btnDeletar.dataset.id;
-    const itemTarefa = btnDeletar.closest(".task-item"); 
-    modalExcluir.classList.add('active');
-    
+    tarefaIdAtual = btnDeletar.dataset.id;
+    document.getElementById("delete-id").value = tarefaIdAtual;
+    modalExcluirObj.show();
   }
 
   // FLUXO DE EDIÇÃO
   if (btnEditar) {
-    const idTarefa = btnEditar.dataset.id;
-     modalEditar.classList.add('active');
+    const itemTarefa = btnEditar.closest(".task-item");
+
+    const tarefaIdAtual = btnEditar.dataset.id;
+    const tituloAtual = itemTarefa.querySelector(".task-title").dataset.tarefa;
+    const prioridadeAtual =
+      itemTarefa.querySelector(".task-prioridade").dataset.prioridade;
+
+    document.getElementById("edit-id").value = tarefaIdAtual;
+    document.getElementById("edit-titulo").value = tituloAtual;
+    document.getElementById("edit-prioridade").value = prioridadeAtual;
+
+    modalEditarObj.show();
   }
 });
 
-// MODAL
+// SALVAR EDIÇÕES
+btnSalvarEdicao.addEventListener("click", () => {
+ 
+  const id = document.getElementById("edit-id").value;
+  const titulo = document.getElementById("edit-titulo").value;
+  const prioridade = document.getElementById("edit-prioridade").value;
 
+  try {
+    
+    const urlUpdatetarefa = urlApi + "?recurso=tarefa";
+    const atualizarStatus = new Request(urlUpdatetarefa, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({id: id, titulo: titulo, prioridade: prioridade}),
+    });
 
+    atualizarInformacoesTarefa(atualizarStatus);
+    modalEditarObj.hide();
+    carregarTarefas();
 
+  } catch (error) {
+    console.error("Erro ao salvar:", error);
+  }
+});
+
+// DELETAR EDIÇÕES
+btnSalvarDeletar.addEventListener("click", () => {
+  
+  const id = document.getElementById("edit-id").value;
+  
+  try {
+    
+    const urlDelete = urlApi;
+    const atualizarStatus = new Request(urlDelete, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({id: id}),
+    });
+
+    atualizarInformacoesTarefa(atualizarStatus);
+    modalEditarObj.hide();
+    carregarTarefas();
+
+  } catch (error) {
+    console.error("Erro ao salvar:", error);
+  }
+});
 
 // INICIALIZAÇÃO
 carregarTarefas();

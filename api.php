@@ -13,9 +13,9 @@ switch ($metodo) {
         echo $listaTarefa = buscarTarefas();
         break;
 
-    case "POST": 
+    // case "POST": 
 
-        break;
+    //     break;
 
     case "PUT": 
       
