@@ -1,7 +1,12 @@
 // ELEMENTOS GLOBAIS
 const adicionar = document.getElementById("adicionar_btn");
+const criarTarefa = document.getElementById("CriarTarefa");
 const listaTarefas = document.getElementById("task-list");
+const listaTarefasConcluidas = document.getElementById("task-list-concluidas");
+const listaTarefasPendentes = document.getElementById("task-list-pendentes");
 const contagemTarefas = document.getElementById("count");
+const filtros = document.querySelectorAll(".filter");
+const campoBusca = document.getElementById("input-title"); 
 
 // CONFIRMAÇÃO DO MODAL
 const btnSalvarEdicao = document.getElementById("btn-salvar-edicao");
@@ -64,18 +69,39 @@ async function carregarTarefas() {
     const tarefas = Array.isArray(data) ? data : (data.tarefas ?? []);
 
     const fragmento = document.createDocumentFragment();
+    const fragmentoPendentes = document.createDocumentFragment();
+    const fragmentoConcluidas = document.createDocumentFragment();
+
     tarefas.forEach((tarefa) => {
       tarefa.concluida = Number(tarefa.concluida) === 1;
       fragmento.appendChild(renderizarTarefa(tarefa));
+      const itemRenderizado = renderizarTarefa(tarefa);
+      if (tarefa.concluida) {
+        fragmentoConcluidas.appendChild(itemRenderizado);
+      } else {
+        fragmentoPendentes.appendChild(itemRenderizado);
+      }
     });
 
-    contagemTarefas.innerHTML = `<i class="bi bi-bar-chart-line"></i> ${tarefas.length} Tarefas`;
     listaTarefas.appendChild(fragmento);
+    listaTarefasPendentes.appendChild(fragmentoPendentes);
+    listaTarefasConcluidas.appendChild(fragmentoConcluidas);
+
+    if (tarefas.length === 0) {
+      const semTarefas = `<li class='task-item subtitle'>Sem Tarefas</li>`;
+      listaTarefas.innerHTML = semTarefas;
+      listaTarefasPendentes.innerHTML = semTarefas;
+      listaTarefasConcluidas.innerHTML = semTarefas;
+    }
   } catch (error) {
     console.error("Erro na requisição:", error.message);
-    listaTarefas.innerHTML = `<li>Não foi possível carregar as tarefas. Tente novamente mais tarde.</li>`;
+    const semTarefas = `<li>Não foi possível carregar as tarefas.</li>`;
+    listaTarefas.innerHTML = semTarefas;
+    listaTarefasPendentes.innerHTML = semTarefas;
+    listaTarefasConcluidas.innerHTML = semTarefas;
   }
 }
+
 async function atualizarInformacoesTarefa(tarefa) {
   try {
     const response = await fetch(tarefa);
@@ -151,7 +177,6 @@ listaTarefas.addEventListener("click", (event) => {
     const tituloAtual = itemTarefa.querySelector(".task-title").dataset.tarefa;
     const prioridadeAtual =
       itemTarefa.querySelector(".task-prioridade").dataset.prioridade;
-
     document.getElementById("edit-id").value = tarefaIdAtual;
     document.getElementById("edit-titulo").value = tituloAtual;
     document.getElementById("edit-prioridade").value = prioridadeAtual;
@@ -162,26 +187,22 @@ listaTarefas.addEventListener("click", (event) => {
 
 // SALVAR EDIÇÕES
 btnSalvarEdicao.addEventListener("click", () => {
- 
   const id = document.getElementById("edit-id").value;
   const titulo = document.getElementById("edit-titulo").value;
   const prioridade = document.getElementById("edit-prioridade").value;
 
   try {
-    
     const urlUpdatetarefa = urlApi + "?recurso=tarefa";
-    const atualizarStatus = new Request(urlUpdatetarefa, {
+    const atualizarTarefa = new Request(urlUpdatetarefa, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({id: id, titulo: titulo, prioridade: prioridade}),
+      body: JSON.stringify({ id: id, titulo: titulo, prioridade: prioridade }),
     });
 
-    atualizarInformacoesTarefa(atualizarStatus);
-    modalEditarObj.hide();
-    carregarTarefas();
-
+    atualizarInformacoesTarefa(atualizarTarefa);
+    location.reload();
   } catch (error) {
     console.error("Erro ao salvar:", error);
   }
@@ -189,27 +210,90 @@ btnSalvarEdicao.addEventListener("click", () => {
 
 // DELETAR EDIÇÕES
 btnSalvarDeletar.addEventListener("click", () => {
-  
-  const id = document.getElementById("edit-id").value;
-  
+  const id = document.getElementById("delete-id").value;
+
   try {
-    
-    const urlDelete = urlApi;
-    const atualizarStatus = new Request(urlDelete, {
+    const urlDelete = urlApi + "?recurso=arquivar";
+    const deletarTarefa = new Request(urlDelete, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({id: id}),
+      body: JSON.stringify({ id: id }),
     });
 
-    atualizarInformacoesTarefa(atualizarStatus);
-    modalEditarObj.hide();
-    carregarTarefas();
-
+    atualizarInformacoesTarefa(deletarTarefa);
+    location.reload();
   } catch (error) {
     console.error("Erro ao salvar:", error);
   }
+});
+
+// CRIAR TAREFA
+criarTarefa.addEventListener("submit", (evento) => {
+  evento.preventDefault();
+  const tituloTarefa = document.getElementById("titulo").value;
+  const prioridadeTarefa = document.getElementById("prioridade").value;
+
+  try {
+    const urlCrateTarefa = urlApi;
+    const CriarTarefa = new Request(urlCrateTarefa, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        titulo: tituloTarefa,
+        prioridade: prioridadeTarefa,
+      }),
+    });
+
+    atualizarInformacoesTarefa(CriarTarefa);
+    location.reload();
+  } catch (error) {
+    console.error("Erro ao salvar:", error);
+  }
+});
+
+filtros.forEach((botao) => {
+  botao.addEventListener("click", (event) => {
+    const botaoClicado = event.currentTarget;
+    
+    const textoFiltro = botaoClicado.textContent.trim().toLowerCase();
+
+    listaTarefas.classList.add("d-none");
+    listaTarefasPendentes.classList.add("d-none");
+    listaTarefasConcluidas.classList.add("d-none");
+
+   
+    if (textoFiltro === "pendentes") {
+      listaTarefasPendentes.classList.remove("d-none");
+    } else if (textoFiltro === "concluídas") {
+      listaTarefasConcluidas.classList.remove("d-none");
+    } else {
+      listaTarefas.classList.remove("d-none");
+    }
+  });
+});
+
+
+campoBusca.addEventListener("input", (event) => {
+  
+  const termoBusca = event.target.value.toLowerCase().trim();
+  const todasAsTarefas = document.querySelectorAll(".task-item");
+
+  todasAsTarefas.forEach((tarefaElemento) => {
+    const tituloElemento = tarefaElemento.querySelector(".task-title");
+    
+    if (!tituloElemento) return; 
+    const titulo = tituloElemento.textContent.toLowerCase();
+
+    if (titulo.includes(termoBusca)) {
+      tarefaElemento.classList.remove("d-none");
+    } else {
+      tarefaElemento.classList.add("d-none");
+    }
+  });
 });
 
 // INICIALIZAÇÃO
