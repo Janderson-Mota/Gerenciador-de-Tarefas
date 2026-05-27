@@ -19,8 +19,9 @@
 
     <!-- Formulário de nova tarefa -->
     <form class="form" id="form-add">
-      <input type="text" class="input" id="input-title" placeholder="nova tarefa..." autocomplete="off" />
-      <button type="submit" class="btn-add" id="adicionar_btn">+</button>
+      <input type="text" class="input" id="input-title" placeholder="buscar tarefa..." autocomplete="off" />
+      <button type="button" class="btn-add" data-bs-toggle="modal" data-bs-target="#exampleModal"
+        id="adicionar_btn">+</button>
     </form>
 
     <!-- Filtros -->
@@ -30,16 +31,14 @@
       <button class="filter" data-filter="done">concluídas</button>
     </div>
 
-    <!-- Lista de tarefas -->
+    <!-- Lista de tarefas completo-->
     <ul class="task-list" id="task-list"></ul>
 
-    <!-- Rodapé com contagem -->
-    <div class="d-flex justify-content-end">
-      <div class="alert alert-light p-1 w-25" id="contagem" role="alert">
-        <span id="count"></span>
-      </div>
-    </div>
+    <!-- Lista de tarefas concluidas-->
+    <ul class="task-list d-none" id="task-list-concluidas"></ul>
 
+    <!-- Lista de tarefas pendentes-->
+    <ul class="task-list d-none" id="task-list-pendentes"></ul>
 
     <!-- Mensagem de feedback (erros, sucesso) -->
     <div class="toast" id="toast"></div>
@@ -94,6 +93,42 @@
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
             <button type="button" class="btn btn-danger" id="btn-confirmar-delecao">Excluir</button>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL DE CRIAÇÃO -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Criar Tarefa</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <form method="POST" id="CriarTarefa">
+            <div class="modal-body">
+              <div class="mb-3">
+                <label for="titulo" class="form-label">Nome da Tarefa</label>
+                <input type="text" class="form-control" id="titulo" name="titulo" required>
+              </div>
+
+              <div class="mb-3">
+                <label for="prioridade" class="form-label">Prioridade</label>
+                <select id="prioridade" name="prioridade" class="form-select">
+                  <option value="1">Baixa</option>
+                  <option value="2">Média</option>
+                  <option value="3">Alta</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+              <button type="submit" class="btn btn-primary">Criar</button>
+            </div>
+          </form>
+          
         </div>
       </div>
     </div>
