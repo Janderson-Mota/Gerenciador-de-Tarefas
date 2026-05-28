@@ -1,35 +1,40 @@
-# 📝 Gerenciador de Tarefas (To-Do List)
+# Gerenciador de Tarefas (To-Do List)
+#### Nota de Escopo: Este é um projeto desenvolvido exclusivamente para fins estudantis e didáticos. O objetivo principal foi consolidar conhecimentos em integração de sistemas usando JavaScript Moderno (Vanilla JS) no Front-end e PHP Puro no Back-end, sem o uso de frameworks externos de reatividade.
 
-> ⚠️ **Nota de Escopo:** Este é um projeto desenvolvido exclusivamente para **fins estudantis** e didáticos. O objetivo principal foi consolidar conhecimentos em integração de sistemas usando JavaScript Moderno (Vanilla JS) no Front-end e PHP Puro no Back-end, sem o uso de frameworks externos.
+Uma aplicação simples, responsiva e funcional de lista de tarefas para ajudar na organização do dia a dia. O projeto simula o ciclo completo de uma aplicação real, realizando requisições assíncronas para persistência de dados locais, além de contar com sistema de busca e filtros dinâmicos de interface.
 
-Uma aplicação simples, responsiva e funcional de lista de tarefas para ajudar na organização do dia a dia. O projeto simula o ciclo completo de uma aplicação real, realizando requisições assíncronas para persistência de dados local.
-
----
-
-## 🚀 Tecnologias Aprendidas e Aplicadas
-
+## Tecnologias Aprendidas e Aplicadas
 O desenvolvimento deste ecossistema envolveu o aprendizado prático de diversas tecnologias e conceitos de arquitetura:
 
-### **Front-end**
-* **HTML5 Semântico:** Estruturação da página priorizando acessibilidade (A11y) e boas práticas de leitura para leitores de tela.
-* **CSS3 Customizado:** Estilização modular moderna usando variáveis globais e flexbox para garantir responsividade nativa.
-* **JavaScript Assíncrono (ES6+):** * Uso de `async/await` e API `fetch` para comunicação com o servidor.
-    * **Delegação de Eventos (Event Delegation):** Implementação de ouvintes de eventos otimizados no elemento pai (`<ul>`) para gerenciar dinamicamente elementos gerados via API.
-    * Manipulação eficiente do DOM em memória através do `DocumentFragment`.
+#### Front-end
+HTML5 e CSS3: Estruturação semântica e estilização utilizando componentes do Bootstrap (como Modais e Badges) combinados com manipulação nativa de classes utilitárias para controle de estado visual.
 
-### **Back-end & Banco de Dados**
-* **PHP 8 (Puro):** Criação de uma API RESTful simplificada utilizando estruturas de controle como `switch/case`.
-* **Manipulação de Streams (`php://input`):** Aprendizado crítico sobre como capturar e fazer o `json_decode()` de payloads brutos em formato JSON enviados pelo Front-end.
-* **Passagem por Referência (`&$variavel`):** Uso do operador `&` para modificar diretamente itens de coleções em memória dentro de loops.
-* **Banco de Dados JSON:** Armazenamento, leitura (`file_get_contents`) e escrita (`file_put_contents`) de dados persistidos diretamente em um arquivo estruturado `db.json`.
+JavaScript Assíncrono (ES6+): Uso de async/await e API fetch para comunicação com o servidor e envio de métodos HTTP.
 
----
+Manipulação e Otimização do DOM: Renderização performática com DocumentFragment, delegação de eventos (Event Delegation) nos contêineres principais e alternância de visibilidade via manipulação do objeto classList.
 
-## ⚙️ Funcionalidades Implementadas
+Algoritmos de Filtro Client-side: Implementação de motor de busca em tempo real escutando o evento de input com o método includes(), além de gerenciamento de estado das abas de navegação.
 
-* [x] **Listagem Dinâmica:** Renderização assíncrona das tarefas direto do "banco de dados" local.
-* [x] **Gerenciamento de Estado (Conclusão):** O clique no checkbox risca o título da tarefa via CSS, desabilita os botões de ação e salva o novo estado instantaneamente no servidor.
-* [x] **Registro de Logs de Tempo:** O servidor carimba automaticamente a data e hora exata de modificação sempre que uma tarefa sofre alterações.
-* [ ] **Criação de Tarefas** *(Em desenvolvimento)*
-* [ ] **Edição de Títulos com Lápis** *(Em desenvolvimento)*
-* [ ] **Exclusão de Tarefas com Lixeira** *(Em desenvolvimento)*
+#### Back-end & Banco de Dados
+PHP 8 (Puro): Criação de uma API RESTful simplificada atuando como controlador de rotas baseadas nos parâmetros e métodos de requisição (GET, POST, PUT, DELETE).
+
+Manipulação de Streams: Captura e processamento de payloads JSON brutos enviados pelo cliente utilizando php://input.
+
+Passagem por Referência: Uso do operador &$variavel para modificar diretamente itens de coleções na memória durante a manipulação dos dados.
+
+Persistência em Arquivo JSON: Simulação de banco de dados através da leitura (file_get_contents) e escrita (file_put_contents) em um arquivo estruturado db.json.
+
+## Funcionalidades Implementadas
+[x] Listagem Dinâmica: Renderização assíncrona das tarefas consumidas da API na inicialização da página.
+
+[x] Criação de Tarefas: Formulário para adição de novos itens, incluindo níveis de prioridade, com atualização na base de dados e no DOM.
+
+[x] Gerenciamento de Estado (Conclusão): O clique no checkbox altera o estado visual da tarefa, trava ações de edição/exclusão e dispara a requisição de atualização (PUT) para a API.
+
+[x] Edição e Exclusão: Interface com modais de confirmação para editar os atributos da tarefa ou removê-la permanentemente.
+
+[x] Sistema de Abas (Filtros): Segmentação da visualização em painéis para "Todas", "Pendentes" e "Concluídas", sem necessidade de recarregar a página.
+
+[x] Busca em Tempo Real: Campo de pesquisa que filtra as tarefas instantaneamente pela correspondência de texto no título.
+
+[x] Registro de Logs Temporais: O back-end registra automaticamente metadados com data e hora exatas de cada operação de criação ou modificação de status.
